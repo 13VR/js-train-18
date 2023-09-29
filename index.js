@@ -304,15 +304,16 @@ function processData(data) {
   // Виводимо stack trace помилки
   // Повертаємо повідомлення помилки
   try {
-    for (let index = 0; index < data.length; index++) {
-      const element = data[index];
-      if (typeof element !== "number") {
+    data.forEach((item, index) => {
+      if (typeof item !== "number") {
         throw new TypeError(`Елемент з індексом ${index} має бути числом!`);
       }
-    }
+    });
+
     return "Дані успішно оброблені";
-  } catch (err) {
-    return err.message;
+  } catch (error) {
+    console.error(error.stack);
+    return error.message;
   }
 }
 
@@ -343,7 +344,7 @@ function evaluateExpression(expression) {
       return result;
     }
   } catch (error) {
-    return error;
+    return new EvalError(error.message);
   }
 }
 
